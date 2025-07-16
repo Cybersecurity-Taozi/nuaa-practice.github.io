@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>象遇彩云之南 - 南京航空航天大学暑期社会实践</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-x: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .page.active {
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .cover {
+            background-image: url('亚洲象.jpg');
+            background-color: #0a4d68;
+        }
+        
+        .intro {
+            background-color: rgba(10, 77, 104, 0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 80%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-image: url('云南.png');
+        }
+        
+        .station {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .station:hover {
+            transform: scale(1.05);
+            border-color: #ffd700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+        
+        .station-title {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 16px;
+            width: 160px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .station:hover .station-title {
+            background-color: rgba(10, 77, 104, 0.9);
+        }
+        
+        .station-1 { top: 25%; left: 25%; transform: translate(-50%, -50%); }
+        .station-2 { top: 25%; left: 75%; transform: translate(-50%, -50%); }
+        .station-3 { top: 65%; left: 25%; transform: translate(-50%, -50%); }
+        .station-4 { top: 65%; left: 75%; transform: translate(-50%, -50%); }
+        
+        .station-1 { background-image: url('聂耳故居.jpg'); }
+        .station-2 { background-image: url('洛河彝族乡_南安哨村.png'); }
+        .station-3 { background-image: url('云南民族博物馆.jpg'); }
+        .station-4 { background-image: url('圆通山亚洲象馆.jpg'); }
+        
+        .station-page {
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            max-width: 80%;
+            backdrop-filter: blur(10px);
+        }
+        
+        .station-header {
+            font-size: 42px;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .station-subtitle {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #4fc0d0;
+        }
+        
+        .station-desc {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .station-1-page { background-image: url('聂耳故居.jpg'); }
+        .station-2-page { background-image: url('洛河彝族乡_南安哨村.png'); }
+        .station-3-page { background-image: url('云南民族博物馆.jpg'); }
+        .station-4-page { background-image: url('圆通山亚洲象馆.jpg'); }
+        
+        .final-page {
+            background-image: url('结尾.jpg');
+            background-color: #0a4d68;
+        }
+        
+        .final-text {
+            position: absolute;
+            bottom: 20%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s ease;
+        }
+        
+        .final-text.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .final-title {
+            font-size: 42px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .final-subtitle {
+            font-size: 28px;
+            color: #ffd700;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        }
+        
+        .title-box {
+            background-color: rgba(10, 77, 104, 0.85);
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .main-title {
+            font-size: 48px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        
+        .sub-title {
+            font-size: 24px;
+            color: #ffd700;
+        }
+        
+        .click-hint {
+            position: absolute;
+            bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700, #4fc0d0);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .station-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <!-- 封面页 -->
+    <div class="page active cover" id="cover">
+        <div class="title-box">
+            <div class="main-title">"象"遇彩云之南</div>
+            <div class="sub-title">南京航空航天大学暑期社会实践</div>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar" id="progress"></div>
+    </div>
+    
+    <!-- 导语页 -->
+    <div class="page" id="intro-page">
+        <div class="intro">
+            <h2 style="font-size: 32px; margin-bottom: 20px; color: #ffd700;">探索之旅</h2>
+            <p style="font-size: 20px; line-height: 1.8; margin-bottom: 25px;">
+                7月14日至21日，实践团队深入云南昆明、玉溪两地，围绕"生态治理与亚洲象保护"和"乡村文化振兴"两大主题，开启了一场知行合一的探索之旅。
+            </p>
+            <p style="font-size: 20px; line-height: 1.8;">
+                从博物馆的文化溯源到田间地头的实地调研，从生态部门的政策学习到与亚洲象的"亲密接触"，我们用文字与影像，记录这段充满意义的旅程。
+            </p>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 云南地图页 -->
+    <div class="page map-container" id="map-page">
+        <div class="station station-1">
+            <div class="station-title">玉溪・文化根脉与生态初心</div>
+        </div>
+        <div class="station station-2">
+            <div class="station-title">乡野寻踪・象与人共生的答案</div>
+        </div>
+        <div class="station station-3">
+            <div class="station-title">历史传承・象群保护理念</div>
+        </div>
+        <div class="station station-4">
+            <div class="station-title">圆通山·从"文化想象"到"真实相遇"</div>
+        </div>
+        <div class="click-hint">点击站点继续探索</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 第一站：玉溪 -->
+    <div class="page station-1-page" id="station1">
+        <div class="station-page">
+            <div class="station-header">第一站</div>
+            <div class="station-subtitle">玉溪・文化根脉与生态初心</div>
+            <div class="station-icon">🌿</div>
+            <div class="station-desc">
+                <p><strong>时间地点：</strong>7月15日-16日，玉溪博物馆、聂耳故居、红塔区林草局</p>
+                <p style="margin-top: 20px;">在博物馆的青铜器与民族服饰中了解滇中历史，在聂耳故居感受红色精神。在红塔区林业和草原局，深入学习生态治理策略，特别关注亚洲象北上迁徙的应对机制。</p>
+            </div>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 第二站：洛河彝族乡 -->
+    <div class="page station-2-page" id="station2">
+        <div class="station-page">
+            <div class="station-header">第二站</div>
+            <div class="station-subtitle">乡野寻踪・象与人共生的答案</div>
+            <div class="station-icon">🐘</div>
+            <div class="station-desc">
+                <p><strong>时间地点：</strong>7月17日，洛河彝族乡、南安哨村</p>
+                <p style="margin-top: 20px;">深入亚洲象迁徙途经的乡村，走访农户记录农耕生产与生态保护的平衡智慧，对话村干部解码"和美乡村"建设规划，实地追踪象群活动痕迹，思考人象冲突的化解之道。</p>
+            </div>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 第三站：民族博物馆 -->
+    <div class="page station-3-page" id="station3">
+        <div class="station-page">
+            <div class="station-header">第三站</div>
+            <div class="station-subtitle">历史传承・象群保护理念</div>
+            <div class="station-icon">🏛️</div>
+            <div class="station-desc">
+                <p><strong>时间地点：</strong>7月18日，云南民族博物馆</p>
+                <p style="margin-top: 20px;">探寻傣族、彝族等民族与亚洲象共生的文化符号，聚焦馆内亚洲象主题展，从图腾崇拜到现代保护，理解民族文化对生态观念的影响，记录昆明在城市发展中保留民族特色的创新举措。</p>
+            </div>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 第四站：圆通山 -->
+    <div class="page station-4-page" id="station4">
+        <div class="station-page">
+            <div class="station-header">第四站</div>
+            <div class="station-subtitle">圆通山·从"文化想象"到"真实相遇"</div>
+            <div class="station-icon">🎪</div>
+            <div class="station-desc">
+                <p><strong>时间地点：</strong>7月19日，圆通山亚洲象馆</p>
+                <p style="margin-top: 20px;">零距离观察亚洲象行为，对比文化象征与现实认知；对话饲养员，验证象群迁徙数据。创意互动拍摄，收集游客对象群北迁的看法，完成从"文化想象"到"真实相遇"的跨越。</p>
+            </div>
+        </div>
+        <div class="click-hint">点击继续</div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <!-- 结尾页 -->
+    <div class="page final-page" id="final-page">
+        <div class="final-text" id="final-text">
+            <div class="final-title">2025 "象"遇彩云之南</div>
+            <div class="final-subtitle">南京航空航天大学电子信息工程学院</div>
+        </div>
+        <div class="progress-bar"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pages = document.querySelectorAll('.page');
+            const progress = document.getElementById('progress');
+            let currentPage = 0;
+            const stationMap = {
+                'station-1': 3,
+                'station-2': 4,
+                'station-3': 5,
+                'station-4': 6
+            };
+            
+            // 初始显示封面页
+            showPage(0);
+            
+            // 添加点击事件
+            document.body.addEventListener('click', function() {
+                if (currentPage < pages.length - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                    
+                    // 如果是地图页，延迟显示站点
+                    if (currentPage === 2) {
+                        setTimeout(() => {
+                            document.querySelectorAll('.station').forEach(station => {
+                                station.style.opacity = '1';
+                                station.style.transform = station.style.transform.replace('scale(0.8)', 'scale(1)');
+                            });
+                        }, 2000);
+                    }
+                    
+                    // 如果是结尾页，延迟显示文字
+                    if (currentPage === pages.length - 1) {
+                        setTimeout(() => {
+                            document.getElementById('final-text').classList.add('active');
+                        }, 2000);
+                    }
+                }
+            });
+            
+            // 为地图页的站点添加点击事件
+            document.querySelectorAll('.station').forEach(station => {
+                station.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const stationClass = this.classList[1];
+                    currentPage = stationMap[stationClass];
+                    showPage(currentPage);
+                });
+            });
+            
+            function showPage(index) {
+                pages.forEach((page, i) => {
+                    if (i === index) {
+                        page.classList.add('active');
+                        progress.style.width = `${(index / (pages.length - 1)) * 100}%`;
+                    } else {
+                        page.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
